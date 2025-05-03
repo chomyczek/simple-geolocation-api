@@ -51,7 +51,7 @@ class TestIpToGeolocation:
     test_token = "test"
 
     def test_get_ip(self, requests_mock):
-        converter = Ip2Geolocation(self.test_token)
+        converter = Ip2Geolocation()
         requests_mock.get(converter.get_url(self.test_ip), json=self.mock_json_output)
         output = converter.get(self.test_ip)
         assert output is not None
@@ -60,7 +60,7 @@ class TestIpToGeolocation:
 
     def test_get_url(self, requests_mock):
         url = "www.example.com"
-        converter = Ip2Geolocation(self.test_token)
+        converter = Ip2Geolocation()
         requests_mock.get(converter.get_url(url), json=self.mock_json_output)
         output = converter.get(url, True)
         assert output is not None
@@ -74,22 +74,18 @@ class TestIpToGeolocation:
             yield mock
 
     def test_raise_connection2(self, mock_requests_wa):
-        converter = Ip2Geolocation(self.test_token)
+        converter = Ip2Geolocation()
         mock_requests_wa.get(converter.get_url(self.test_ip), exc=requests.exceptions.ConnectionError)
         output = converter.get(self.test_ip)
         assert output is None
 
     def test_get_no_value(self):
-        converter = Ip2Geolocation(self.test_token)
+        converter = Ip2Geolocation()
         output = converter.get(None)
         assert output is None
 
     def test_get_part_of_json(self, requests_mock):
-        converter = Ip2Geolocation(self.test_token)
+        converter = Ip2Geolocation()
         requests_mock.get(converter.get_url(self.test_ip), json=json.loads('{"ip":"0.0.0.0"}'))
         output = converter.get(self.test_ip)
         assert output is None
-
-    def test_singleton(self):
-        converter = Ip2Geolocation("new_test_token")
-        assert converter.token == self.test_token

@@ -11,10 +11,9 @@ app.add_url_rule("/add", methods=["POST"], view_func=add.add)
 app.add_url_rule("/show", methods=["POST"], view_func=show.show)
 app.add_url_rule("/delete", methods=["POST"], view_func=delete.delete)
 
-# todo verify token
 
 if __name__ == "__main__":
     app_config.set_db_url()
-    # todo prepare db on demand
+    app_config.set_token("test")
     DbHandler().prepare_db_tables()
     app.run()

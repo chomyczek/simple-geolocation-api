@@ -2,20 +2,20 @@ from typing import Union
 
 import requests
 
-from meta.singleton_meta import SingletonMeta
 from model.geolocation import Geolocation
+from util import app_config
 
 
-class Ip2Geolocation(metaclass=SingletonMeta):  # todo replace singleton with config
+class Ip2Geolocation:
     """
     Class responsible for communication with the api.ipstack.com application. A token is required to communicate with
-    the api. A class created with the Thread-safe Singleton pattern.
+    the api.
     """
 
     token: str = None
 
-    def __init__(self, token: str = None):
-        self.token = token
+    def __init__(self):
+        self.token = app_config.API_TOKEN
 
     def get(self, value: str, is_url_value: bool = False) -> Union[None, Geolocation]:
         """
