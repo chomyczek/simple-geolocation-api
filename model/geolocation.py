@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DECIMAL
+from sqlalchemy import DECIMAL, Column, Integer, String
 from sqlalchemy.orm import declarative_base
 
 base = declarative_base()

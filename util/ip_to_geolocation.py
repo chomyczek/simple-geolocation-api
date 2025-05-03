@@ -11,6 +11,7 @@ class Ip2Geolocation(metaclass=SingletonMeta):
     Class responsible for communication with the api.ipstack.com application. A token is required to communicate with
     the api. A class created with the Thread-safe Singleton pattern.
     """
+
     token: str = None
 
     def __init__(self, token: str = None):
@@ -58,8 +59,16 @@ class Ip2Geolocation(metaclass=SingletonMeta):
         return f"https://api.ipstack.com/{value}?access_key={self.token}"
 
     def _json_to_geolocation(self, json):
-        if json.get("ip") and json.get("continent_name") and json.get("country_name") and json.get("region_name") and \
-                json.get("zip") and json.get("latitude") and json.get("longitude") and json.get("radius"):
+        if (
+            json.get("ip")
+            and json.get("continent_name")
+            and json.get("country_name")
+            and json.get("region_name")
+            and json.get("zip")
+            and json.get("latitude")
+            and json.get("longitude")
+            and json.get("radius")
+        ):
             ip = json["ip"]
             continent_name = json["continent_name"]
             country_name = json["country_name"]

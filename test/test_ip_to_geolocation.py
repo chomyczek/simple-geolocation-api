@@ -1,15 +1,16 @@
 import json
 
 import pytest
-import requests_mock
 import requests
+import requests_mock
 
 from model.geolocation import Geolocation
 from util.ip_to_geolocation import Ip2Geolocation
 
 
 class TestIpToGeolocation:
-    mock_json_output = json.loads("""{
+    mock_json_output = json.loads(
+        """{
         "ip": "3.226.163.86",
         "hostname": "ec2-3-226-163-86.compute-1.amazonaws.com",
         "type": "ipv4",
@@ -44,7 +45,8 @@ class TestIpToGeolocation:
             "calling_code": "1",
             "is_eu": false
         }
-    }""")
+    }"""
+    )
     test_ip = "127.0.0.1"
     test_token = "test"
 
@@ -76,7 +78,6 @@ class TestIpToGeolocation:
         mock_requests_wa.get(converter.get_url(self.test_ip), exc=requests.exceptions.ConnectionError)
         output = converter.get(self.test_ip)
         assert output is None
-
 
     def test_get_no_value(self):
         converter = Ip2Geolocation(self.test_token)
