@@ -6,7 +6,7 @@ from meta.singleton_meta import SingletonMeta
 from model.geolocation import Geolocation
 
 
-class Ip2Geolocation(metaclass=SingletonMeta):
+class Ip2Geolocation(metaclass=SingletonMeta):  # todo replace singleton with config
     """
     Class responsible for communication with the api.ipstack.com application. A token is required to communicate with
     the api. A class created with the Thread-safe Singleton pattern.
@@ -17,13 +17,13 @@ class Ip2Geolocation(metaclass=SingletonMeta):
     def __init__(self, token: str = None):
         self.token = token
 
-    def get(self, value: str, url_value: bool = False) -> Union[None, Geolocation]:
+    def get(self, value: str, is_url_value: bool = False) -> Union[None, Geolocation]:
         """
-        The function is responsible for connecting to the API and returning the retrieved value in the form of a
+        Connecting to the API and returning the retrieved value in the form of a
         Geolocation model object. If there is a problem while retrieving the data, the value None will be returned
         instead.
         :param value: The value we want to check in the service, can be IP or URL.
-        :param url_value: True if the value is URL.
+        :param is_url_value: True if the value is URL.
         :return: The Geolocation object that was downloaded, or None if there was a problem.
         """
         if not value:
@@ -45,7 +45,7 @@ class Ip2Geolocation(metaclass=SingletonMeta):
         if not geolocation:
             return None
 
-        if url_value:
+        if is_url_value:
             geolocation.url = value
 
         return geolocation
@@ -78,5 +78,15 @@ class Ip2Geolocation(metaclass=SingletonMeta):
             latitude = json["latitude"]
             longitude = json["longitude"]
             radius = json["radius"]
-            return Geolocation(ip, continent_name, country_name, region_name, city, zip_, latitude, longitude, radius)
+            return Geolocation(
+                ip=ip,
+                continent_name=continent_name,
+                country_name=country_name,
+                region_name=region_name,
+                city=city,
+                zip=zip_,
+                latitude=latitude,
+                longitude=longitude,
+                radius=radius,
+            )
         return None

@@ -1,35 +1,26 @@
-from sqlalchemy import DECIMAL, Column, Integer, String
-from sqlalchemy.orm import declarative_base
+from typing import Optional
 
-base = declarative_base()
+from sqlalchemy import DECIMAL
+from sqlalchemy.orm import Mapped, mapped_column
+
+from model.table_base import TableBase
 
 
-class Geolocation(base):
+class Geolocation(TableBase):
     """
     Geolocation class model used to store data in the database.
     """
 
     __tablename__ = "geolocation"
 
-    id = Column(Integer, primary_key=True)
-    ip = Column(String)
-    url = Column(String, nullable=True)
-    continent_name = Column(String)
-    country_name = Column(String)
-    region_name = Column(String)
-    city = Column(String)
-    zip = Column(String)
-    latitude = Column(DECIMAL(17, 15))
-    longitude = Column(DECIMAL(18, 15))
-    radius = Column(DECIMAL)
-
-    def __init__(self, ip, continent_name, country_name, region_name, city, zip_, latitude, longitude, radius):
-        self.ip = ip
-        self.continent_name = continent_name
-        self.country_name = country_name
-        self.region_name = region_name
-        self.city = city
-        self.zip = zip_
-        self.latitude = latitude
-        self.longitude = longitude
-        self.radius = radius
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    ip: Mapped[str]
+    url: Mapped[Optional[str]]
+    continent_name: Mapped[str]
+    country_name: Mapped[str]
+    region_name: Mapped[str]
+    city: Mapped[str]
+    zip: Mapped[str]
+    latitude: Mapped[float] = mapped_column(DECIMAL(17, 15))
+    longitude: Mapped[float] = mapped_column(DECIMAL(18, 15))
+    radius: Mapped[float] = mapped_column(DECIMAL)
