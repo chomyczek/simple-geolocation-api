@@ -1,3 +1,5 @@
+import argparse
+
 from flask import Flask
 
 from route import add, delete, index, get
@@ -13,7 +15,10 @@ app.add_url_rule("/delete", methods=["POST"], view_func=delete.delete)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog='simple-geolocation-api')
+    parser.add_argument('-t', '--token', required=True, help="Token generated from ipstack.com service")
+    args = parser.parse_args()
     app_config.set_db_url()
-    app_config.set_token("test")  # todo
+    app_config.set_token(args.token)
     DbHandler().prepare_db_tables()
     app.run()
