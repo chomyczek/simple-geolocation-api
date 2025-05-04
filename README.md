@@ -185,4 +185,4 @@ This will start the server, and you can interact with it at:
 http://localhost:5000/
 ```
 
-You can test the API endpoint using cURL, Postman, or by integrating it into your front-end application.
+You can test the API endpoint using cURL, Postman, or by integrating it into your front-end application. Please see [Api Routes](#api-routes) section for example of usage. 
