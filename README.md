@@ -201,14 +201,20 @@ The application has several parameters to modify the input data.
 
 ### Docker
 
-[!CAUTION]
-Before you build the docker image, you need to modify the CMD line in the dockerfile. You need to replace the API_KEY value with the actual key from [ipstack.com](www.ipstack.com). Here you can also modify the expected hostname and application port.
 
+|IMPORTANT!                                                                                                                                                                                                                                             |
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Before you build the docker image, you need to modify the CMD line in the dockerfile. You need to replace the API_KEY value with the actual key from [ipstack.com](www.ipstack.com). |
+
+You can modify the expected hostname and application port in dockerfile script.
+
+#### Build
 To build the image enter the following command:
 ```bash
 docker build -t geolocation-api .
 ```
 
+#### Run
 To run the image, you need to provide the port specified in the Dockerfile. The default command might look like this:
 ```bash
 docker run -p 5000:5000 geolocation-api  
