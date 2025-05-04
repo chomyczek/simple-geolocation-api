@@ -85,6 +85,17 @@ class TestRoute:
     def test_add_db_success(self, client, setup_db, mocker):
         geo = self._get_geolocation_object()
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
+
+        result = client.post("/add", json={
+            "input": geo.ip,
+        })
+
+        assert result.json["message"] == "Value added to database successfully."
+        assert result.json["result"]["ip"] == geo.ip
+
+    def test_add_db_fail(self, client, setup_db, mocker):
+        geo = self._get_geolocation_object()
+        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         mocker.patch.object(DbHandler, "add_geolocation", return_value=False)
 
         result = client.post("/add", json={
@@ -93,9 +104,6 @@ class TestRoute:
 
         assert result.json["message"] == "Failed to add value to database."
         assert result.json["result"] is None
-
-    def test_add_db_fail(self):
-        raise NotImplementedError()
 
     def test_delete(self):
         raise NotImplementedError()
