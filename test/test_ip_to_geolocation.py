@@ -62,7 +62,7 @@ class TestIpToGeolocation:
         url = "www.example.com"
         converter = Ip2Geolocation()
         requests_mock.get(converter.get_url(url), json=self.mock_json_output)
-        output = converter.get(url, True)
+        output = converter.get(url, False)
         assert output is not None
         assert type(output) is Geolocation
         assert output.url == url

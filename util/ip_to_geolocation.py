@@ -17,7 +17,7 @@ class Ip2Geolocation:
     def __init__(self):
         self.token = app_config.API_TOKEN
 
-    def get(self, value: str, is_ip: bool = False) -> Union[None, Geolocation]:
+    def get(self, value: str, is_ip: bool = True) -> Union[None, Geolocation]:
         """
         Connecting to the API and returning the retrieved value in the form of a
         Geolocation model object. If there is a problem while retrieving the data, the value None will be returned
