@@ -17,13 +17,13 @@ class Ip2Geolocation:
     def __init__(self):
         self.token = app_config.API_TOKEN
 
-    def get(self, value: str, is_url_value: bool = False) -> Union[None, Geolocation]:
+    def get(self, value: str, is_ip: bool = False) -> Union[None, Geolocation]:
         """
         Connecting to the API and returning the retrieved value in the form of a
         Geolocation model object. If there is a problem while retrieving the data, the value None will be returned
         instead.
         :param value: The value we want to check in the service, can be IP or URL.
-        :param is_url_value: True if the value is URL.
+        :param is_ip: Set to True if the value is IP.
         :return: The Geolocation object that was downloaded, or None if there was a problem.
         """
         if not value:
@@ -45,7 +45,7 @@ class Ip2Geolocation:
         if not geolocation:
             return None
 
-        if is_url_value:
+        if not is_ip:
             geolocation.url = value
 
         return geolocation

@@ -1,2 +1,2 @@
-def show():
+def get():
     raise NotImplementedError()

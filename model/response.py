@@ -5,3 +5,9 @@ class Response:
 
     message: str = None
     result: object = None
+
+    def serialize(self):
+        return {
+            'message': self.message,
+            'result': self.result,
+        }

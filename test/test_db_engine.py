@@ -39,23 +39,24 @@ class TestDb:
 
     def test_add(self, setup_db):
         expected = self._db_count() + 1
-        DbHandler().add_geolocation(self._get_geolocation_object())
+        result = DbHandler().add_geolocation(self._get_geolocation_object())
         assert self._db_count() == expected
+        assert result is True
 
-    @pytest.mark.parametrize("is_url", [True, False])
-    def test_delete(self, setup_db, is_url):
+    @pytest.mark.parametrize("is_ip", [True, False])
+    def test_delete(self, setup_db, is_ip):
         handler = DbHandler()
         geolocation_object = self._get_geolocation_object()
         geolocation_object.url = "www.example.com/" + str(time.time())
         handler.add_geolocation(geolocation_object)
         expected_count = self._db_count() - 1
-        value = geolocation_object.url if is_url else geolocation_object.ip
+        value = geolocation_object.ip if is_ip else geolocation_object.url
 
-        result = handler.delete_geolocation(value, is_url)
+        result = handler.delete_geolocation(value, is_ip)
 
         assert result is True
         assert self._db_count() == expected_count
-        assert handler.read_geolocation(value, is_url) is None
+        assert handler.read_geolocation(value, is_ip) is None
 
     def test_delete_multiple(self, setup_db):
         handler = DbHandler()
@@ -68,10 +69,10 @@ class TestDb:
         expected_count = self._db_count() - 2
         value = geolocation_object.url
 
-        handler.delete_geolocation(value, True)
+        handler.delete_geolocation(value, False)
 
         assert self._db_count() == expected_count
-        assert handler.read_geolocation(value, True) is None
+        assert handler.read_geolocation(value, False) is None
 
     def test_read(self, setup_db):
         handler = DbHandler()
@@ -93,7 +94,7 @@ class TestDb:
         handler.add_geolocation(geolocation_object_second)
         expected_len = 2
 
-        result = handler.read_geolocation(geolocation_object.url, True)
+        result = handler.read_geolocation(geolocation_object.url, False)
 
         assert len(result) == expected_len
 
@@ -103,22 +104,23 @@ class TestDb:
         handler.add_geolocation(geolocation_object)
         url = "www.magic-example.com"
 
-        handler.update_geolocation_url(geolocation_object, url)
+        result = handler.update_geolocation_url(geolocation_object, url)
 
         assert handler.read_geolocation(geolocation_object.ip).url == url
+        assert result is True
 
-    @pytest.mark.parametrize("is_url", [True, False])
-    def test_delete_not_found(self, setup_db, is_url):
+    @pytest.mark.parametrize("is_ip", [True, False])
+    def test_delete_not_found(self, setup_db, is_ip):
         handler = DbHandler()
 
-        result = handler.delete_geolocation("unknown_value", is_url)
+        result = handler.delete_geolocation("unknown_value", is_ip)
 
         assert result is False
 
-    @pytest.mark.parametrize("is_url", [True, False])
-    def test_show_not_found(self, setup_db, is_url):
+    @pytest.mark.parametrize("is_ip", [True, False])
+    def test_show_not_found(self, setup_db, is_ip):
         handler = DbHandler()
 
-        result = handler.read_geolocation("unknown_value", is_url)
+        result = handler.read_geolocation("unknown_value", is_ip)
 
         assert result is None

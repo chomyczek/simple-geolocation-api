@@ -7,7 +7,7 @@ def set_db_url(temporary: bool = False):
     Set url to connect to database.
     :param temporary: If true, db file will not be created - used for unit tests
     """
-    location = ":memory:" if temporary else "database.sqlite"
+    location = ":memory:" if temporary else "db.sqlite3"
     global DB_URL
     DB_URL = f"sqlite+pysqlite:///{location}"
 
