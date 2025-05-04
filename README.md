@@ -10,9 +10,9 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [API Routes](#api-routes)
-  - [get](#get)
-  - [add](#post)
-  - [delete](#delete)
+  - [get [POST]](#get)
+  - [add [POST]](#add)
+  - [delete [DELETE]](#delete)
   - [responses](#responses)
 - [Usage](#usage)
   - [Parameters](#parameters)
@@ -69,6 +69,8 @@ Follow these steps to set up the project locally.
 
 ### get
 
+**HTTP Method:** POST
+
 **Description:** Retrieve geolocation data already stored in database or retrive one from external service. You can supply either an IP address or a URL as a JSON input to look up its geolocation information.
 
 #### Query Parameters:
@@ -92,6 +94,8 @@ Example body with URL
 
 ### add
 
+**HTTP Method:** POST
+
 **Description:** Allows the creation of a new geolocation record in database. This route can be useful if you want to store or cache results obtained from external services.
 
 #### Query Parameters:
@@ -114,6 +118,8 @@ Example body with URL
 ```
 
 ### delete
+
+**HTTP Method:** DELETE
 
 **Description:** Deletes geolocation records from database based on the provided IP or URL identifier.
 

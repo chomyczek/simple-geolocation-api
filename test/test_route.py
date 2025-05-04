@@ -42,10 +42,21 @@ class TestRoute:
     def client(self, app):
         return app.test_client()
 
-    @pytest.mark.parametrize("route", ["/add", "/delete", "/get"])
-    def test_route_incorrect_input(self, client, route):
+    @pytest.mark.parametrize("route", ["/add", "/get"])
+    def test_route_incorrect_input_post(self, client, route):
         result = client.post(
             route,
+            json={
+                "query": 123,
+            },
+        )
+
+        assert result.json["message"] == "Incorrect input JSON. Expected input contains 'input' key."
+        assert result.json["result"] is None
+
+    def test_route_incorrect_input_delete(self, client):
+        result = client.delete(
+            "/delete",
             json={
                 "query": 123,
             },
@@ -132,7 +143,7 @@ class TestRoute:
         geo = self._get_geolocation_object()
         DbHandler().add_geolocation(geo)
 
-        result = client.post(
+        result = client.delete(
             "/delete",
             json={
                 "input": geo.ip,
@@ -145,7 +156,7 @@ class TestRoute:
     def test_delete_db_fail(self, client, setup_db):
         geo = self._get_geolocation_object()
 
-        result = client.post(
+        result = client.delete(
             "/delete",
             json={
                 "input": geo.ip,

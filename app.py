@@ -16,7 +16,7 @@ def app_setup() -> Flask:
     app.add_url_rule("/", view_func=index.index)
     app.add_url_rule("/add", methods=["POST"], view_func=add.add)
     app.add_url_rule("/get", methods=["POST"], view_func=get.get)
-    app.add_url_rule("/delete", methods=["POST"], view_func=delete.delete)
+    app.add_url_rule("/delete", methods=["DELETE"], view_func=delete.delete)
     return app
 
 
