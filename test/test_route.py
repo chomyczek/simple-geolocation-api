@@ -38,8 +38,9 @@ class TestRoute:
     def client(self, app):
         return app.test_client()
 
-    def test_add_incorrect_input(self, client):
-        result = client.post("/add", json={
+    @pytest.mark.parametrize("route", ["/add", "/delete"])
+    def test_route_incorrect_input(self, client, route):
+        result = client.post(route, json={
             "query": 123,
         })
 
@@ -105,8 +106,28 @@ class TestRoute:
         assert result.json["message"] == "Failed to add value to database."
         assert result.json["result"] is None
 
-    def test_delete(self):
-        raise NotImplementedError()
+    def test_delete_db_success(self, client, setup_db, mocker):
+        geo = self._get_geolocation_object()
+        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
+        DbHandler().add_geolocation(geo)
+
+        result = client.post("/delete", json={
+            "input": geo.ip,
+        })
+
+        assert result.json["message"] == "Value dropped from database successfully."
+        assert result.json["result"] is None
+
+    def test_delete_db_fail(self, client, setup_db, mocker):
+        geo = self._get_geolocation_object()
+        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
+
+        result = client.post("/delete", json={
+            "input": geo.ip,
+        })
+
+        assert result.json["message"] == "Value was not deleted from the database."
+        assert result.json["result"] is None
 
     def test_get(self):
         raise NotImplementedError()
