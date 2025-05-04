@@ -128,9 +128,8 @@ class TestRoute:
         assert result.json["message"] == "Failed to add value to database."
         assert result.json["result"] is None
 
-    def test_delete_db_success(self, client, setup_db, mocker):
+    def test_delete_db_success(self, client, setup_db):
         geo = self._get_geolocation_object()
-        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         DbHandler().add_geolocation(geo)
 
         result = client.post(
@@ -143,9 +142,8 @@ class TestRoute:
         assert result.json["message"] == "Value dropped from database successfully."
         assert result.json["result"] is None
 
-    def test_delete_db_fail(self, client, setup_db, mocker):
+    def test_delete_db_fail(self, client, setup_db):
         geo = self._get_geolocation_object()
-        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
 
         result = client.post(
             "/delete",
@@ -159,7 +157,6 @@ class TestRoute:
 
     def test_get_db_success(self, client, setup_db, mocker):
         geo = self._get_geolocation_object()
-        mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         DbHandler().add_geolocation(geo)
 
         result = client.post(
@@ -172,7 +169,7 @@ class TestRoute:
         assert result.json["message"] == "Value retrieved from database."
         assert result.json["result"]["ip"] == geo.ip
 
-    def test_get_db_fail(self, client, setup_db, mocker):
+    def test_get_db_fail_service_success(self, client, setup_db, mocker):
         geo = self._get_geolocation_object()
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
 
@@ -183,5 +180,19 @@ class TestRoute:
             },
         )
 
-        assert result.json["message"] == "The value is not present in the database."
+        assert result.json["message"] == "Value retrieved from ipstack service."
+        assert result.json["result"]["ip"] == geo.ip
+
+    def test_get_db_fail_service_fail(self, client, setup_db):
+        geo = self._get_geolocation_object()
+
+        result = client.post(
+            "/get",
+            json={
+                "input": geo.ip,
+            },
+        )
+
+        assert result.json["message"] == "The value does not exist in the database and could not be retrieved from the " \
+                                         "ipstack service."
         assert result.json["result"] is None

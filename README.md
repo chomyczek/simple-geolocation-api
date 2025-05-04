@@ -27,7 +27,7 @@ The Simple Geolocation API is built to quickly fetch geolocation data for a give
 ---
 
 ## Requirements
-To run the application, you need to have an API key for the [ipstack.com](www.ipstack.com) service.
+To run the application, you need to have an API key for the [ipstack.com](www.ipstack.com) service. However, the application tries to use the data stored in the database when it has the opportunity.
 
 ---
 
@@ -200,6 +200,8 @@ The application has several parameters to modify the input data.
 | --port   |  -p  | "he port of the webserver                                                                |
 
 ### Docker
+
+[!CAUTION]
 Before you build the docker image, you need to modify the CMD line in the dockerfile. You need to replace the API_KEY value with the actual key from [ipstack.com](www.ipstack.com). Here you can also modify the expected hostname and application port.
 
 To build the image enter the following command:
