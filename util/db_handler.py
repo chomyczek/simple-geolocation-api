@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Union
 
 from sqlalchemy import Engine
 from sqlalchemy.exc import OperationalError
@@ -19,7 +19,7 @@ class DbHandler:
     def __init__(self):
         self.engine = DbEngine().engine
 
-    def add_geolocation(self, geolocation: Geolocation):
+    def add_geolocation(self, geolocation: Geolocation) -> bool:
         """
         The function adds a geolocation object to the database.
         :param geolocation: Object to be placed in the database. After the function is executed, the object will be

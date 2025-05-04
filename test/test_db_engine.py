@@ -43,7 +43,7 @@ class TestDb:
         assert self._db_count() == expected
         assert result is True
 
-    @pytest.mark.parametrize("is_ip", [ False])
+    @pytest.mark.parametrize("is_ip", [False])
     def test_delete(self, setup_db, is_ip):
         handler = DbHandler()
         geolocation_object = self._get_geolocation_object()

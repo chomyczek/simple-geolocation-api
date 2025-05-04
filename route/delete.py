@@ -1,11 +1,17 @@
-from flask import request, jsonify
+from flask import json, jsonify, request
 
 from model.response import Response
 from util.db_handler import DbHandler
 from util.route_util import decode_input_json, value_is_ip_check
 
 
-def delete():
+def delete() -> json:
+    """
+    This path is used to remove records from the database if it does exist. It takes POST method with a JSON
+    value in the form of the 'input' key and a value in the form of an IP or URL, e.g. {"input":"ipstack.com"}
+    :return: The JSON response.
+    :return:
+    """
     response = Response()
     req_data = request.get_json()
 

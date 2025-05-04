@@ -1,6 +1,4 @@
-
-
-from flask import request, jsonify
+from flask import json, jsonify, request
 
 from model.response import Response
 from util.db_handler import DbHandler
@@ -8,7 +6,12 @@ from util.ip_to_geolocation import Ip2Geolocation
 from util.route_util import decode_input_json, value_is_ip_check
 
 
-def add():
+def add() -> json:
+    """
+    This path is used to add a new value to the database if it does not already exist. It takes POST method with a JSON
+    value in the form of the 'input' key and a value in the form of an IP or URL, e.g. {"input":"ipstack.com"}
+    :return: The JSON response.
+    """
     response = Response()
     req_data = request.get_json()
 
@@ -47,4 +50,3 @@ def add():
         response.message = "Failed to add value to database."
 
     return jsonify(response.serialize())
-

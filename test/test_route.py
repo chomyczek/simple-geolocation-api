@@ -31,7 +31,11 @@ class TestRoute:
     @pytest.fixture
     def app(self):
         app = app_setup()
-        app.config.update({"TESTING": True, })
+        app.config.update(
+            {
+                "TESTING": True,
+            }
+        )
         yield app
 
     @pytest.fixture
@@ -40,9 +44,12 @@ class TestRoute:
 
     @pytest.mark.parametrize("route", ["/add", "/delete", "/get"])
     def test_route_incorrect_input(self, client, route):
-        result = client.post(route, json={
-            "query": 123,
-        })
+        result = client.post(
+            route,
+            json={
+                "query": 123,
+            },
+        )
 
         assert result.json["message"] == "Incorrect input JSON. Expected input contains 'input' key."
         assert result.json["result"] is None
@@ -51,9 +58,12 @@ class TestRoute:
         geo = self._get_geolocation_object()
         DbHandler().add_geolocation(geo)
 
-        result = client.post("/add", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/add",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Value already in database."
         assert result.json["result"]["ip"] == geo.ip
@@ -62,9 +72,12 @@ class TestRoute:
         mocker.patch.object(Ip2Geolocation, "get", return_value=None)
         geo = self._get_geolocation_object()
 
-        result = client.post("/add", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/add",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "There was problem related to ipstack service."
         assert result.json["result"] is None
@@ -75,9 +88,12 @@ class TestRoute:
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         DbHandler().add_geolocation(geo)
 
-        result = client.post("/add", json={
-            "input": url,
-        })
+        result = client.post(
+            "/add",
+            json={
+                "input": url,
+            },
+        )
 
         assert result.json["message"] == "The URL has been updated to an existing record in the database."
         assert result.json["result"]["ip"] == geo.ip
@@ -87,9 +103,12 @@ class TestRoute:
         geo = self._get_geolocation_object()
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
 
-        result = client.post("/add", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/add",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Value added to database successfully."
         assert result.json["result"]["ip"] == geo.ip
@@ -99,9 +118,12 @@ class TestRoute:
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         mocker.patch.object(DbHandler, "add_geolocation", return_value=False)
 
-        result = client.post("/add", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/add",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Failed to add value to database."
         assert result.json["result"] is None
@@ -111,9 +133,12 @@ class TestRoute:
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         DbHandler().add_geolocation(geo)
 
-        result = client.post("/delete", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/delete",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Value dropped from database successfully."
         assert result.json["result"] is None
@@ -122,9 +147,12 @@ class TestRoute:
         geo = self._get_geolocation_object()
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
 
-        result = client.post("/delete", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/delete",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Value was not deleted from the database."
         assert result.json["result"] is None
@@ -134,9 +162,12 @@ class TestRoute:
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
         DbHandler().add_geolocation(geo)
 
-        result = client.post("/get", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/get",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "Value retrieved from database."
         assert result.json["result"]["ip"] == geo.ip
@@ -145,9 +176,12 @@ class TestRoute:
         geo = self._get_geolocation_object()
         mocker.patch.object(Ip2Geolocation, "get", return_value=geo)
 
-        result = client.post("/get", json={
-            "input": geo.ip,
-        })
+        result = client.post(
+            "/get",
+            json={
+                "input": geo.ip,
+            },
+        )
 
         assert result.json["message"] == "The value is not present in the database."
         assert result.json["result"] is None
