@@ -15,7 +15,7 @@ def set_db_url(temporary: bool = False):
 def set_token(token: str):
     """
     Set token required to connect to ipstack.com.
-    :param token: Token generated from service
+    :param token: Token generated from ipstack.com service.
     """
     if not token:
         raise ValueError("ipstack token is required to start the server. Please start app with -t parameter.")

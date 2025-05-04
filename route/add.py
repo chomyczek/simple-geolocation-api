@@ -27,7 +27,7 @@ def add():
         response.result = geo
         return jsonify(response.serialize())
 
-    geo=Ip2Geolocation().get(value, is_ip)
+    geo = Ip2Geolocation().get(value, is_ip)
     if not geo:
         response.message = "There was problem related to ipstack service."
         return jsonify(response.serialize())
@@ -50,7 +50,7 @@ def add():
 
 
 def decode_input_json(json: dict) -> Union[None, str]:
-    if json is dict:
+    if type(json) is dict:
         return json.get("input")
     return None
 
