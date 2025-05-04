@@ -9,6 +9,6 @@ class Response:
     def serialize(self):
         return {
             'message': self.message,
-            'result': {key: value for key, value in self.result.__dict__.items() if
-                       not key.startswith('_') and not callable(key)},
+            'result': None if not self.result else {key: value for key, value in self.result.__dict__.items() if
+                                                    not key.startswith('_') and not callable(key)},
         }

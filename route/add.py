@@ -1,11 +1,11 @@
-import re
-from typing import Union
+
 
 from flask import request, jsonify
 
 from model.response import Response
 from util.db_handler import DbHandler
 from util.ip_to_geolocation import Ip2Geolocation
+from util.route_util import decode_input_json, value_is_ip_check
 
 
 def add():
@@ -48,13 +48,3 @@ def add():
 
     return jsonify(response.serialize())
 
-
-def decode_input_json(json: dict) -> Union[None, str]:
-    if type(json) is dict:
-        return json.get("input")
-    return None
-
-
-def value_is_ip_check(value: str) -> bool:
-    match = re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", value)
-    return bool(match)

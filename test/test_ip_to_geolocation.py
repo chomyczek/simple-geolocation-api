@@ -73,7 +73,7 @@ class TestIpToGeolocation:
         with requests_mock.Mocker() as mock:
             yield mock
 
-    def test_raise_connection2(self, mock_requests_wa):
+    def test_raise_connection(self, mock_requests_wa):
         converter = Ip2Geolocation()
         mock_requests_wa.get(converter.get_url(self.test_ip), exc=requests.exceptions.ConnectionError)
         output = converter.get(self.test_ip)
