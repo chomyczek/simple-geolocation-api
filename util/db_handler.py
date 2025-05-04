@@ -35,19 +35,18 @@ class DbHandler:
                 session.rollback()
                 return False
 
-    def read_geolocation(self, value: str, is_ip: bool = True) -> Union[None, Geolocation, list[Type[Geolocation]]]:
+    def read_geolocation(self, value: str, is_ip: bool = True) -> Union[None, Geolocation]:
         """
         Retrieves records from the Geolocation table based on either an IP address or a URL.
         :param value: IP or URL required for executing function.
         :param is_ip: Set to True if IP was provided as value.
-        :return: todo
+        :return: Requested Geolocation object or None if not found.
         """
         with Session(self.engine) as session:
             if is_ip:
                 return session.query(Geolocation).filter_by(ip=value).first()
             else:
-                result = session.query(Geolocation).filter_by(url=value).all()  # todo: always will be one
-                return result if result else None
+                return session.query(Geolocation).filter_by(url=value).first()
 
     def delete_geolocation(self, value: str, is_ip: bool = True) -> bool:
         """
@@ -60,11 +59,7 @@ class DbHandler:
         if not geolocation:
             return False
         with Session(self.engine) as session:
-            if is_ip:
-                session.delete(geolocation)
-            else:
-                for g in geolocation:
-                    session.delete(g)
+            session.delete(geolocation)
             try:
                 session.commit()
             except OperationalError:
