@@ -204,6 +204,8 @@ class TestRoute:
             },
         )
 
-        assert result.json["message"] == "The value does not exist in the database and could not be retrieved from the " \
-                                         "ipstack service."
+        assert (
+            result.json["message"] == "The value does not exist in the database and could not be retrieved from the "
+            "ipstack service."
+        )
         assert result.json["result"] is None

@@ -35,7 +35,8 @@ def get() -> json:
             response.message = "Value retrieved from ipstack service."
             response.result = geo
         else:
-            response.message = "The value does not exist in the database and could not be retrieved from the ipstack " \
-                               "service."
+            response.message = (
+                "The value does not exist in the database and could not be retrieved from the ipstack " "service."
+            )
 
     return jsonify(response.serialize())
