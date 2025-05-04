@@ -15,6 +15,8 @@
   - [delete](#delete)
   - [responses](#responses)
 - [Usage](#usage)
+  - [Parameters](#parameters)
+  - [Docker](#docker)
 
 ---
 
@@ -25,7 +27,7 @@ The Simple Geolocation API is built to quickly fetch geolocation data for a give
 ---
 
 ## Requirements
-To run the application, you need to have an API key for the ipstack.com service.
+To run the application, you need to have an API key for the [ipstack.com](www.ipstack.com) service.
 
 ---
 
@@ -174,15 +176,38 @@ Returns a JSON object containing geolocation details and operation information:
 
 ## Usage
 
-After installation, you can start the API with a simple command. For example:
+After installation, you can start the API with a simple command.
 
+For example:
 ```bash
-python app.py -t <your-ipstack-key>
+python app.py -t <your-ipstack-key> -i "127.0.0.1" -p 5000
 ```
 
 This will start the server, and you can interact with it at:
 ```
-http://localhost:5000/
+http://127.0.0.1:5000/
+```
+You can test the API endpoint using cURL, Postman, or by integrating it into your front-end application. Please see [Api Routes](#api-routes) section for example of usage. 
+
+
+### Parameters
+The application has several parameters to modify the input data.
+
+| Name     | Flag | Description                                                                              |
+|:---------|:----:|:-----------------------------------------------------------------------------------------|
+| --token  |  -t  | **REQUIRED!** The token generated from [ipstack.com](www.ipstack.com) service            |
+| --host   |  -i  | The hostname to listen on. Set this to '0.0.0.0' to have the server available externally |
+| --port   |  -p  | "he port of the webserver                                                                |
+
+### Docker
+Before you build the docker image, you need to modify the CMD line in the dockerfile. You need to replace the API_KEY value with the actual key from [ipstack.com](www.ipstack.com). Here you can also modify the expected hostname and application port.
+
+To build the image enter the following command:
+```bash
+docker build -t geolocation-api .
 ```
 
-You can test the API endpoint using cURL, Postman, or by integrating it into your front-end application. Please see [Api Routes](#api-routes) section for example of usage. 
+To run the image, you need to provide the port specified in the Dockerfile. The default command might look like this:
+```bash
+docker run -p 5000:5000 geolocation-api  
+```
